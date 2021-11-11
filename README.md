@@ -63,4 +63,4 @@ Please make sure to update tests as appropriate.
 [![Gmail Badge](https://img.shields.io/badge/-joabsonlg918@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:joabsonlg918@gmail.com)](mailto:joabsonlg918@gmail.com)
 
 ## License
-[MIT](https://github.com/Joabsonlg/django-api-template/blob/master/LICENSE)
+[MIT](https://github.com/Joabsonlg/ddm-rest-api/blob/master/LICENSE)
