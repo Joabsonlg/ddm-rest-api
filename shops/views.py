@@ -118,7 +118,6 @@ def deleteProduct(request, slug):
     product.delete()
     return Response(status=204)
 
-# download qr_code image from product
 @api_view(['GET'])
 def getQRCode(request, slug):
     try:
@@ -126,7 +125,8 @@ def getQRCode(request, slug):
     except Product.DoesNotExist:
         raise Http404
     qr_code = product.qr_code
-    return HttpResponse(qr_code, content_type="image/png")
+    url = request.build_absolute_uri(qr_code.url)
+    return Response(url)
 
 # End of products
 
