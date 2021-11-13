@@ -1,6 +1,6 @@
-# Django API template
+# DDM - Final project
 
-#### This is a basic django api template.
+#### API to be used in the final project
 
 
 ## Project setup
@@ -8,11 +8,11 @@
 Use [git](https://git-scm.com/) to clone the project:
 
 ```bash
-git clone https://github.com/Joabsonlg/django-api-template
+git clone https://github.com/Joabsonlg/ddm-rest-api
 ```
 Enter the project:
 ```bash
-cd django-api-template
+cd ddm-rest-api
 ```
 Create a virtual environment. (replace 'X' with your python version):
 ```bash
@@ -33,7 +33,7 @@ SECRET_KEY=mySecretKey
 
 Install the dependencies:
 ```bash
-pip install django django-cors-headers djangorestframework djoser django-environ
+pip install django django-cors-headers djangorestframework djoser django-environ whitenoise pyyaml psycopg2 pillow gunicorn coreapi
 ```
 
 Create a superuser
@@ -63,4 +63,4 @@ Please make sure to update tests as appropriate.
 [![Gmail Badge](https://img.shields.io/badge/-joabsonlg918@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:joabsonlg918@gmail.com)](mailto:joabsonlg918@gmail.com)
 
 ## License
-[MIT](https://github.com/Joabsonlg/django-api-template/blob/master/LICENSE)
+[MIT](https://github.com/Joabsonlg/ddm-rest-api/blob/master/LICENSE)
