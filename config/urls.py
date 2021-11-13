@@ -4,9 +4,10 @@ from rest_framework.schemas import get_schema_view
 from rest_framework.documentation import include_docs_urls
 from django.conf.urls.static import static
 from django.conf import settings
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 urlpatterns = [
-    path('', include_docs_urls(title='DDM')),
+    path('', include_docs_urls(title='DDM', permission_classes=[IsAuthenticatedOrReadOnly,])),
     path('admin/', admin.site.urls),
     path('api/v1/', include('djoser.urls')),
     path('api/v1/', include('djoser.urls.jwt')),

@@ -3,6 +3,7 @@ from shops.models import Shop
 from shops.models import Product
 from shops.models import Category
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import Http404
 
@@ -27,6 +28,7 @@ def getShop(request, slug):
     return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def createShop(request):
     serializer = ShopSerializer(data=request.data)
     if serializer.is_valid():
@@ -35,6 +37,7 @@ def createShop(request):
     return Response(serializer.errors, status=400)
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def updateShop(request, slug):
     try:
         shop = Shop.objects.get(slug=slug)
@@ -47,6 +50,7 @@ def updateShop(request, slug):
     return Response(serializer.errors, status=400)
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def deleteShop(request, slug):
     try:
         shop = Shop.objects.get(slug=slug)
@@ -83,6 +87,7 @@ def getProduct(request, slug):
     return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def createProduct(request):
     serializer = ProductSerializer(data=request.data)
     if serializer.is_valid():
@@ -91,6 +96,7 @@ def createProduct(request):
     return Response(serializer.errors, status=400)
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def updateProduct(request, slug):
     try:
         product = Product.objects.get(slug=slug)
@@ -103,6 +109,7 @@ def updateProduct(request, slug):
     return Response(serializer.errors, status=400)
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def deleteProduct(request, slug):
     try:
         product = Product.objects.get(slug=slug)
@@ -140,6 +147,7 @@ def getCategory(request, slug):
     return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def createCategory(request):
     serializer = CategorySerializer(data=request.data)
     if serializer.is_valid():
@@ -148,6 +156,7 @@ def createCategory(request):
     return Response(serializer.errors, status=400)
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def updateCategory(request, slug):
     try:
         category = Category.objects.get(slug=slug)
@@ -160,6 +169,7 @@ def updateCategory(request, slug):
     return Response(serializer.errors, status=400)
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def deleteCategory(request, slug):
     try:
         category = Category.objects.get(slug=slug)
