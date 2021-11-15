@@ -66,14 +66,18 @@ class Product(models.Model):
         return f'/{self.slug}/'
 
     def save(self, *args, **kwargs):
-        qrcode_img = qrcode.make(self.description)
-        canvas = Image.new('RGB', (356, 356), (255, 255, 255))
-        draw = ImageDraw.Draw(canvas)
-        canvas.paste(qrcode_img)
         fname = f'{self.name}.png'
         buffer = BytesIO()
-        canvas.save(buffer, format='PNG')
+        qr = qrcode.QRCode(
+            version=12,
+            error_correction=qrcode.constants.ERROR_CORRECT_H,
+            box_size=10,
+            border=8
+        )
+        qr.add_data(self.description)
+        qr.make()
+        qrcode_img = qr.make_image()
+        qrcode_img.save(buffer, format='PNG')
         encoded = "data:image/png;base64, "+base64.b64encode(buffer.getvalue()).decode("ascii")
         self.base_64_qr_code = encoded
-        canvas.close()
         super().save(*args, **kwargs)
