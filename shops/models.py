@@ -5,6 +5,7 @@ import qrcode
 from io import BytesIO
 from django.core.files import File
 from PIL import Image, ImageDraw
+import base64
 
 # Create a model for shops
 class Shop(models.Model):
@@ -50,7 +51,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
     category = models.CharField(max_length=200)
-    qr_code = models.ImageField(upload_to='qr_codes', blank=True)
+    base_64_qr_code = models.TextField(blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -64,9 +65,6 @@ class Product(models.Model):
     def get_absolute_url(self):
         return f'/{self.slug}/'
 
-    def get_qr_code_url(self):
-        return self.qr_code.url
-
     def save(self, *args, **kwargs):
         qrcode_img = qrcode.make(self.description)
         canvas = Image.new('RGB', (356, 356), (255, 255, 255))
@@ -75,6 +73,7 @@ class Product(models.Model):
         fname = f'{self.name}.png'
         buffer = BytesIO()
         canvas.save(buffer, format='PNG')
-        self.qr_code.save(fname, File(buffer), save=False)
+        encoded = "data:image/png;base64, "+base64.b64encode(buffer.getvalue()).decode("ascii")
+        self.base_64_qr_code = encoded
         canvas.close()
         super().save(*args, **kwargs)

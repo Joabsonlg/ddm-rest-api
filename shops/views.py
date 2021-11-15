@@ -124,9 +124,7 @@ def getQRCode(request, slug):
         product = Product.objects.get(slug=slug)
     except Product.DoesNotExist:
         raise Http404
-    qr_code = product.qr_code
-    url = request.build_absolute_uri(qr_code.url)
-    return Response(url)
+    return Response(product.base_64_qr_code)
 
 # End of products
 
