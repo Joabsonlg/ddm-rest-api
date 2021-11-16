@@ -10,6 +10,10 @@ from django.http import Http404
 from shops.serializers import ShopSerializer
 from shops.serializers import ProductSerializer
 from shops.serializers import CategorySerializer
+from PIL import Image
+from django.http import HttpResponse
+from io import BytesIO
+import base64
 
 # Funcions for shops
 @api_view(['GET'])
@@ -124,8 +128,23 @@ def getQRCode(request, slug):
         product = Product.objects.get(slug=slug)
     except Product.DoesNotExist:
         raise Http404
-    return Response(product.base_64_qr_code)
+    return Response("data:image/png;base64, "+product.base_64_qr_code)
 
+# create a view to generate a pdf from a qr code product
+@api_view(['GET'])
+def getQRCodePdf(request, slug):
+    try:
+        product = Product.objects.get(slug=slug)
+    except Product.DoesNotExist:
+        raise Http404
+    # create pdf from base64 and download pdf
+    pdf = BytesIO()
+    img = Image.open(BytesIO(base64.b64decode(product.base_64_qr_code)))
+    img.save(pdf, format='PDF')
+    pdf.seek(0)
+    response = HttpResponse(pdf.read(), content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="'+product.slug+'.pdf"'
+    return response
 # End of products
 
 # Funcions for categories

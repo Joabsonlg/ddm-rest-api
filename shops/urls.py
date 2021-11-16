@@ -14,6 +14,7 @@ urlpatterns = [
     path('products/<slug:slug>/update/', views.updateProduct),
     path('products/<slug:slug>/delete/', views.deleteProduct),
     path('products/<slug:slug>/qr-code/', views.getQRCode),
+    path('products/<slug:slug>/qr-code/download', views.getQRCodePdf),
     path('categories/', views.getAllCategories),
     path('categories/save/', views.createCategory),
     path('categories/<slug:slug>/', views.getCategory),

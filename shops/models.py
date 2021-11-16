@@ -78,6 +78,6 @@ class Product(models.Model):
         qr.make()
         qrcode_img = qr.make_image()
         qrcode_img.save(buffer, format='PNG')
-        encoded = "data:image/png;base64, "+base64.b64encode(buffer.getvalue()).decode("ascii")
+        encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
         self.base_64_qr_code = encoded
         super().save(*args, **kwargs)
