@@ -10,7 +10,6 @@ from djoser.conf import django_settings
 class PasswordResetView(APIView):
 
     def get(self, request, uid, token):
-        # send uid and token to the template reset_password.html
         return render(request, 'users/email/change_password.html', {'uid': uid, 'token': token})
 
     def reset_user_password(request, uid, token):
