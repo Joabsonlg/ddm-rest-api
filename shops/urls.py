@@ -5,6 +5,7 @@ urlpatterns = [
     path('shops/', views.getAllShops),
     path('shops/save/', views.createShop),
     path('shops/<slug:slug>/', views.getShop),
+    path('shops/user/<int:id>/', views.getShopByUser),
     path('shops/<slug:slug>/update/', views.updateShop),
     path('shops/<slug:slug>/delete/', views.deleteShop),
     path('shops/<slug:slug>/products/', views.getProductsFromShop),

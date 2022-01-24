@@ -15,12 +15,14 @@ from django.http import HttpResponse
 from io import BytesIO
 import base64
 
+
 # Funcions for shops
 @api_view(['GET'])
 def getAllShops(request):
     shops = Shop.objects.all()
     serializer = ShopSerializer(shops, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def getShop(request, slug):
@@ -31,6 +33,7 @@ def getShop(request, slug):
     serializer = ShopSerializer(shop)
     return Response(serializer.data)
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createShop(request):
@@ -39,6 +42,17 @@ def createShop(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
+
+
+@api_view(['GET'])
+def getShopByUser(request, id):
+    try:
+        shop = Shop.objects.get(user=id)
+        serializer = ShopSerializer(shop)
+        return Response(serializer.data)
+    except Shop.DoesNotExist:
+        raise Http404
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -53,6 +67,7 @@ def updateShop(request, slug):
         return Response(serializer.data)
     return Response(serializer.errors, status=400)
 
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def deleteShop(request, slug):
@@ -63,6 +78,7 @@ def deleteShop(request, slug):
     shop.delete()
     return Response(status=204)
 
+
 @api_view(['GET'])
 def getProductsFromShop(request, slug):
     try:
@@ -72,6 +88,8 @@ def getProductsFromShop(request, slug):
     products = Product.objects.filter(shop=shop)
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
+
+
 # End of shops
 
 # Funcions for products
@@ -80,6 +98,7 @@ def getAllProducts(request):
     products = Product.objects.all()
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def getProduct(request, slug):
@@ -90,6 +109,7 @@ def getProduct(request, slug):
     serializer = ProductSerializer(product)
     return Response(serializer.data)
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createProduct(request):
@@ -98,6 +118,7 @@ def createProduct(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -112,6 +133,7 @@ def updateProduct(request, slug):
         return Response(serializer.data)
     return Response(serializer.errors, status=400)
 
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def deleteProduct(request, slug):
@@ -122,13 +144,15 @@ def deleteProduct(request, slug):
     product.delete()
     return Response(status=204)
 
+
 @api_view(['GET'])
 def getQRCode(request, slug):
     try:
         product = Product.objects.get(slug=slug)
     except Product.DoesNotExist:
         raise Http404
-    return Response("data:image/png;base64, "+product.base_64_qr_code)
+    return Response("data:image/png;base64, " + product.base_64_qr_code)
+
 
 # create a view to generate a pdf from a qr code product
 @api_view(['GET'])
@@ -143,8 +167,10 @@ def getQRCodePdf(request, slug):
     img.save(pdf, format='PDF')
     pdf.seek(0)
     response = HttpResponse(pdf.read(), content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="'+product.slug+'.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="' + product.slug + '.pdf"'
     return response
+
+
 # End of products
 
 # Funcions for categories
@@ -153,6 +179,7 @@ def getAllCategories(request):
     categories = Category.objects.all()
     serializer = CategorySerializer(categories, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 def getCategory(request, slug):
@@ -163,6 +190,7 @@ def getCategory(request, slug):
     serializer = CategorySerializer(category)
     return Response(serializer.data)
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createCategory(request):
@@ -171,6 +199,7 @@ def createCategory(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
+
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -184,6 +213,7 @@ def updateCategory(request, slug):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=400)
+
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
