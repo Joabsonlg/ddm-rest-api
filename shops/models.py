@@ -1,18 +1,19 @@
-from django.db import models
-from autoslug import AutoSlugField
-from users.models import User
-import qrcode
-from io import BytesIO
-from django.core.files import File
-from PIL import Image, ImageDraw
 import base64
+from io import BytesIO
+
+import qrcode
+from autoslug import AutoSlugField
+from django.db import models
+
+from users.models import User
+
 
 # Create a model for shops
 class Shop(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     slug = AutoSlugField(unique=True, always_update=False, populate_from='name')
-    address = models.CharField(max_length=200)
+    address = models.CharField(max_length=200, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)
     website = models.CharField(max_length=100, blank=True, null=True)
 
@@ -26,6 +27,7 @@ class Shop(models.Model):
 
     def get_absolute_url(self):
         return f'/{self.slug}/'
+
 
 # create a model for categories
 class Category(models.Model):
@@ -42,6 +44,7 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return f'/{self.slug}/'
+
 
 # Create a model for products
 class Product(models.Model):
