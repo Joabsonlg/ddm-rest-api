@@ -1,19 +1,19 @@
-from django.shortcuts import render
-from shops.models import Shop
-from shops.models import Product
-from shops.models import Category
+import base64
+from io import BytesIO
+
+from PIL import Image
+from django.http import Http404
+from django.http import HttpResponse
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django.http import Http404
 
-from shops.serializers import ShopSerializer
-from shops.serializers import ProductSerializer
-from shops.serializers import CategorySerializer
-from PIL import Image
-from django.http import HttpResponse
-from io import BytesIO
-import base64
+from shops.models import Category
+from shops.models import Product
+from shops.models import Shop
+from shops.serializers import ShopSerializer, CategorySerializer, ProductSerializer, UserShopSerializer
+from users.serializers import UserCreateSerializer
 
 
 # Funcions for shops
@@ -35,13 +35,19 @@ def getShop(request, slug):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def createShop(request):
-    serializer = ShopSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=201)
-    return Response(serializer.errors, status=400)
+    user_serializer = UserCreateSerializer(data=request.data['user'])
+    if user_serializer.is_valid():
+        user_serializer.save()
+        shop_serializer = UserShopSerializer(
+            data={'user': user_serializer.data['id'], 'name': user_serializer.data['name']})
+        if shop_serializer.is_valid():
+            shop_serializer.save()
+            return Response(shop_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(shop_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
