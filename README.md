@@ -26,14 +26,12 @@ source venv/bin/activate
 
 Add the environment variables: (create the '.env' file and add the variables)
 ```bash
-EMAIL_HOST_USER=myEmail@gmail.com
-EMAIL_HOST_PASSWORD=myPassword
 SECRET_KEY=mySecretKey
 ```
 
 Install the dependencies:
 ```bash
-pip install django django-cors-headers djangorestframework djoser django-environ whitenoise pyyaml psycopg2 pillow gunicorn coreapi qrcode django-autoslug
+pip install django django-cors-headers djangorestframework djoser django-environ whitenoise pyyaml psycopg2 pillow gunicorn coreapi qrcode django-autoslug sendgrid-django
 ```
 
 Create a superuser
