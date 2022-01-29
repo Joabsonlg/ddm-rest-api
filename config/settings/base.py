@@ -3,6 +3,8 @@ from pathlib import Path
 import environ
 import os
 
+from rest_framework.permissions import AND
+
 env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -136,12 +138,14 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
+SENDGRID_API_KEY = "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"
 EMAIL_PORT = 587
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'joabsonlg917@gmail.com'
 
 DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,
