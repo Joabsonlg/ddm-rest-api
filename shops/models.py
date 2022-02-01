@@ -76,7 +76,8 @@ class Product(models.Model):
             box_size=10,
             border=8
         )
-        qr.add_data(self.description)
+        qr_data = 'Nome: %s,\nPreço: R$%s,\nDescrição: %s' % (self.name, self.price, self.description)
+        qr.add_data(qr_data)
         qr.make()
         qrcode_img = qr.make_image()
         qrcode_img.save(buffer, format='PNG')
