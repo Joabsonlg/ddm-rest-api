@@ -123,3 +123,17 @@ class UserTestCase(APITestCase):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.data['re_password'], ['Este campo é obrigatório.'])
+
+    def test_create_user_with_wrong_re_password(self):
+        """
+        Ensure we can create a new user object.
+        """
+        url = '/api/v1/users/'
+        data = {
+            'username': 'testuser',
+            'email': 'teste@email.com',
+            'password': 'a2d4g6j8',
+            're_password': 'wrong_password'
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, 400)
