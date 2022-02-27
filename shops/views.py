@@ -165,6 +165,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
                                     'update': [IsAdminUser],
                                     'destroy': [IsAdminUser]}
 
+    def get_serializer_class(self):
+        return CategorySerializer
+
     def list(self, request):
         categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
