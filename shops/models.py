@@ -32,6 +32,7 @@ class Shop(models.Model):
 # create a model for categories
 class Category(models.Model):
     name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
     slug = AutoSlugField(unique=True, always_update=False, populate_from='name')
 
     def __str__(self):
