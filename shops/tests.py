@@ -231,6 +231,24 @@ class ShopTestCase(APITestCase):
         self.assertEqual(response.data['name'], 'Test Shop')
         self.assertEqual(response.data['user'], self.commom_user.id)
 
+    def test_retrieve_products_shop(self):
+        """
+        Ensure we can retrieve a shop object.
+        """
+        response = self.create_shop()
+        url = '/api/v1/shops/{}/products'.format(response.data['slug'])
+        response = self.client.get(url, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 0)
+
+    def test_retrieve_products_shop_with_invalid_slug(self):
+        """
+        Ensure we can retrieve a shop object.
+        """
+        url = '/api/v1/shops/invalid/products'
+        response = self.client.get(url, format='json')
+        self.assertEqual(response.status_code, 404)
+
     def test_update_shop(self):
         """
         Ensure we can update a shop object.

@@ -70,7 +70,7 @@ class ShopViewSet(viewsets.ViewSet):
     def retrieve_products(self, request, slug=None):
         try:
             shop = Shop.objects.get(slug=slug)
-            products = shop.products.all()
+            products = Product.objects.filter(shop=shop)
             serializer = ProductSerializer(products, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Shop.DoesNotExist:
