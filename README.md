@@ -31,7 +31,7 @@ SECRET_KEY=mySecretKey
 
 Install the dependencies:
 ```bash
-pip install django django-cors-headers djangorestframework djoser django-environ whitenoise pyyaml psycopg2 pillow gunicorn coreapi qrcode django-autoslug sendgrid-django
+pip install -r requirements.txt
 ```
 
 Create a superuser
