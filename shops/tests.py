@@ -165,39 +165,6 @@ class ShopTestCase(APITestCase):
         self.assertEqual(response.data['name'], 'Test Shop')
         self.assertEqual(response.data['user'], 3)
 
-    def test_create_shop_with_invalid_user(self):
-        """
-        Ensure we can't create a new shop object with invalid user.
-        """
-        data = {
-            'name': 'Test Shop',
-            'user': 'invalid'
-        }
-        response = self.client.post(self.base_url, data, format='json')
-        self.assertEqual(response.status_code, 400)
-
-    def test_create_shop_with_not_exists_user(self):
-        """
-        Ensure we can't create a new shop object with not exists user.
-        """
-        data = {
-            'name': 'Test Shop',
-            'user': 99999
-        }
-        response = self.client.post(self.base_url, data, format='json')
-        self.assertEqual(response.status_code, 400)
-
-    def test_create_shop_with_invalid_name(self):
-        """
-        Ensure we can't create a new shop object with invalid name.
-        """
-        data = {
-            'name': '',
-            'user': self.commom_user.id
-        }
-        response = self.client.post(self.base_url, data, format='json')
-        self.assertEqual(response.status_code, 400)
-
     def test_list_shops(self):
         """
         Ensure we can list all shops.
