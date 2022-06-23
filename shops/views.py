@@ -2,6 +2,7 @@ import base64
 from io import BytesIO
 
 from PIL import Image
+from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticated
@@ -36,6 +37,7 @@ class ShopViewSet(viewsets.ViewSet):
     def create(self, request):
         shop = request.data
         user = shop['user']
+        user['password'] = make_password(user['password'])
         user_serializer = UserSerializer(data=user)
         if user_serializer.is_valid():
             user_serializer.save()
