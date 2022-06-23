@@ -6,7 +6,7 @@ from django.conf import settings
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 urlpatterns = [
-    path('', include_docs_urls(title='DDM', permission_classes=[IsAuthenticatedOrReadOnly,])),
+    path('', include_docs_urls(title='MYEyes', permission_classes=[IsAuthenticatedOrReadOnly,])),
     path('admin/', admin.site.urls),
     path('api/v1/', include('djoser.urls')),
     path('api/v1/', include('djoser.urls.jwt')),

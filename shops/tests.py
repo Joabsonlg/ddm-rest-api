@@ -144,9 +144,15 @@ class ShopTestCase(APITestCase):
         return response
 
     def create_shop(self):
+        sample_user = {
+            "name": "Test Shop",
+            "username": "Joabson",
+            "email": "joabsonlg917@gmail.com",
+            "password": "a2d4g6j8",
+            "re_password": "a2d4g6j8",
+        }
         data = {
-            'name': 'Test Shop',
-            'user': self.commom_user.id
+            "user": sample_user
         }
         return self.client.post(self.base_url, data, format='json')
 
@@ -157,27 +163,7 @@ class ShopTestCase(APITestCase):
         response = self.create_shop()
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data['name'], 'Test Shop')
-        self.assertEqual(response.data['user'], self.commom_user.id)
-
-    def test_create_shop_without_user(self):
-        """
-        Ensure we can't create a new shop object without user.
-        """
-        data = {
-            'name': 'Test Shop'
-        }
-        response = self.client.post(self.base_url, data, format='json')
-        self.assertEqual(response.status_code, 400)
-
-    def test_create_shop_without_name(self):
-        """
-        Ensure we can't create a new shop object without name.
-        """
-        data = {
-            'user': self.commom_user.id
-        }
-        response = self.client.post(self.base_url, data, format='json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.data['user'], 3)
 
     def test_create_shop_with_invalid_user(self):
         """
@@ -229,7 +215,7 @@ class ShopTestCase(APITestCase):
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['name'], 'Test Shop')
-        self.assertEqual(response.data['user'], self.commom_user.id)
+        self.assertEqual(response.data['user'], 3)
 
     def test_retrieve_products_shop(self):
         """

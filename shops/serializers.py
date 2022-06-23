@@ -1,7 +1,10 @@
-from users.serializers import UserCreateSerializer
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from shops.models import Category, Product, Shop
+from users.serializers import UserCreateSerializer
+
+User = get_user_model()
 
 
 class ShopSerializer(serializers.ModelSerializer):
@@ -19,6 +22,12 @@ class ProductSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
         fields = '__all__'
 
 

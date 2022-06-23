@@ -1,4 +1,4 @@
-# DDM - Final project
+# MyEyes - API
 
 #### API to be used in the final project
 
@@ -12,7 +12,7 @@ git clone https://github.com/Joabsonlg/ddm-rest-api
 ```
 Enter the project:
 ```bash
-cd ddm-rest-api
+cd product-qr-code-creator
 ```
 Create a virtual environment. (replace 'X' with your python version):
 ```bash
@@ -61,4 +61,4 @@ Please make sure to update tests as appropriate.
 [![Gmail Badge](https://img.shields.io/badge/-joabsonlg918@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:joabsonlg918@gmail.com)](mailto:joabsonlg918@gmail.com)
 
 ## License
-[MIT](https://github.com/Joabsonlg/ddm-rest-api/blob/master/LICENSE)
+[MIT](https://github.com/Joabsonlg/product-qr-code-creator/blob/master/LICENSE)
