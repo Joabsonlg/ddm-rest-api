@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from shops.models import Category
 from shops.models import Product
 from shops.models import Shop
-from shops.serializers import ShopSerializer, CategorySerializer, ProductSerializer
+from shops.serializers import ShopSerializer, CategorySerializer, ProductSerializer, UserSerializer
 
 
 class ShopViewSet(viewsets.ViewSet):
@@ -34,11 +34,20 @@ class ShopViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     def create(self, request):
-        serializer = ShopSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        shop = request.data
+        user = shop['user']
+        user_serializer = UserSerializer(data=user)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            shop['user'] = user_serializer.data['id']
+            shop['name'] = user_serializer.data['name']
+
+            serializer = ShopSerializer(data=shop)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, slug=None):
         try:
