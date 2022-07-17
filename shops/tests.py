@@ -152,7 +152,8 @@ class ShopTestCase(APITestCase):
             "re_password": "a2d4g6j8",
         }
         data = {
-            "user": sample_user
+            "user": sample_user,
+            "address": "Test Address",
         }
         return self.client.post(self.base_url, data, format='json')
 
@@ -164,6 +165,7 @@ class ShopTestCase(APITestCase):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data['name'], 'Test Shop')
         self.assertEqual(response.data['user'], 3)
+        self.assertEqual(response.data['address'], 'Test Address')
 
     def test_list_shops(self):
         """
@@ -183,6 +185,7 @@ class ShopTestCase(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['name'], 'Test Shop')
         self.assertEqual(response.data['user'], 3)
+        self.assertEqual(response.data['address'], 'Test Address')
 
     def test_retrieve_products_shop(self):
         """
@@ -210,12 +213,14 @@ class ShopTestCase(APITestCase):
         url = '/api/v1/shops/{}'.format(response.data['slug'])
         data = {
             'name': 'Test Shop Updated',
-            'user': self.commom_user.id
+            'user': self.commom_user.id,
+            'address': 'Test Address Updated'
         }
         response = self.client.put(url, data, format='json', HTTP_AUTHORIZATION='JWT {}'.format(self.commom_user_token))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['name'], 'Test Shop Updated')
         self.assertEqual(response.data['user'], self.commom_user.id)
+        self.assertEqual(response.data['address'], 'Test Address Updated')
 
     def test_update_shop_without_user(self):
         """
