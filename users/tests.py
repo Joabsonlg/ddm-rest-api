@@ -9,45 +9,64 @@ class AuthTestCase(APITestCase):
             username='testuser',
             password='a2d4g6j8'
         )
+        self.url = '/api/v1/jwt/create/'
+        self.user_token = self.login({
+            'username': 'testuser',
+            'password': 'a2d4g6j8'
+        }).data['access']
+
+    def login(self, data):
+        return self.client.post(self.url, data, format='json')
 
     def test_login(self):
         """
         Ensure we can login a user.
         """
-        url = '/api/v1/jwt/create/'
         data = {
             'username': 'testuser',
             'password': 'a2d4g6j8'
         }
-        response = self.client.post(url, data, format='json')
+        response = self.login(data)
         self.assertEqual(response.status_code, 200)
 
     def test_login_with_wrong_password(self):
         """
-        Ensure we can login a user.
+        Ensure we can not login a user with wrong password.
         """
-        url = '/api/v1/jwt/create/'
         data = {
             'username': 'testuser',
             'password': 'wrong_password'
         }
-        response = self.client.post(url, data, format='json')
+        response = self.login(data)
         self.assertEqual(response.status_code, 401)
 
     def test_login_with_wrong_username(self):
         """
         Ensure we can login a user.
         """
-        url = '/api/v1/jwt/create/'
         data = {
             'username': 'wrong_username',
             'password': 'a2d4g6j8'
         }
-        response = self.client.post(url, data, format='json')
+        response = self.login(data)
         self.assertEqual(response.status_code, 401)
+
+    def test_verify_token(self):
+        """
+        Ensure we can verify a token.
+        """
+        url = '/api/v1/jwt/verify/'
+        data = {
+            'token': self.user_token
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, 200)
 
 
 class UserTestCase(APITestCase):
+    def setUp(self):
+        self.url = '/api/v1/users/'
+
     def test_create_user(self):
         """
         Ensure we can create a new user object.
@@ -137,3 +156,23 @@ class UserTestCase(APITestCase):
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, 400)
+
+    def test_create_superuser(self):
+        """
+        Ensure we can create a new user object.
+        """
+        data = {
+            'username': 'superuser',
+            'email': 'super@gmail.com',
+            'password': 'a2d4g6j8',
+            're_password': 'a2d4g6j8',
+            'is_superuser': True,
+        }
+        response = self.client.post(self.url, data, format='json')
+        self.assertEqual(response.status_code, 201)
+        user = User.objects.get(username='superuser')
+        self.assertEqual(user.username, 'superuser')
+        self.assertEqual(user.email, 'super@gmail.com')
+        self.assertTrue(user.is_active, True)
+        self.assertFalse(user.is_staff, False)
+        self.assertTrue(user.is_superuser, True)
