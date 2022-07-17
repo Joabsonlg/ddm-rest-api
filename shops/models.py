@@ -8,12 +8,11 @@ from django.db import models
 from users.models import User
 
 
-# Create a model for shops
 class Shop(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     slug = AutoSlugField(unique=True, always_update=False, populate_from='name')
-    address = models.CharField(max_length=200, blank=True, null=True)
+    address = models.CharField(max_length=200)
     phone = models.CharField(max_length=20, blank=True, null=True)
     website = models.CharField(max_length=100, blank=True, null=True)
 
